@@ -1,10 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import PlayerGrid from './components/PlayerGrid'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Text style={styles.tite}>Player Grids</Text>
+      <PlayerGrid/>
       <StatusBar style="auto" />
     </View>
   );
@@ -17,4 +19,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  tite:{
+    fontSize: 35,
+    fontWeight: '900',
+    marginBottom:100,
+    
+  }
 });

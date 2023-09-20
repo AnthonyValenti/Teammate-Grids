@@ -14,7 +14,6 @@ const SearchModal: React.FC<SearchModalProps> = ({playerName1,playerName2, isVis
   const [searchText, setSearchText] = useState<string>('');
   const [suggestions, setSuggestions] = useState<string[]>(['']);
   const [suggestionVisible, setSuggestionVisible] = useState<boolean>(false);
-  const [selectedItem, setSelectedItem] = useState<string>(''); 
 
   const handleSubmit = () => {
     onSubmit(searchText);

@@ -1,28 +1,39 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import PlayerGrid from './components/PlayerGrid'
+import PlayerGrid from './components/PlayerGrid';
+import LoginPage from './components/LoginPage';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
+
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.tite}>Player Grids</Text>
-      <PlayerGrid/>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Login'>
+        <Stack.Screen name="Teammate Grid" component={PlayerGrid}
+
+        />
+        <Stack.Screen name="Login" component={LoginPage}
+          options={
+            {
+              title:"Login",
+              headerStyle:{
+                backgroundColor: 'dimgrey',
+              },
+              headerTitleStyle: {
+                fontWeight: '900',
+                fontSize: 25,
+                color: 'white',
+              },
+            }
+          }
+        
+        />
+      </Stack.Navigator>
+
+    </NavigationContainer>
+
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tite:{
-    fontSize: 35,
-    fontWeight: '900',
-    marginBottom:'2%',
-    
-  }
-});

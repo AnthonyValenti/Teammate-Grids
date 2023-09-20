@@ -126,7 +126,7 @@ const PlayerGrid: React.FC = () => {
   };
 
   return (
-    <View>
+    <View style={styles.mainContainer}>
       <SearchModal
         playerName1={playerName1}
         playerName2={playerName2}
@@ -176,6 +176,12 @@ const PlayerGrid: React.FC = () => {
 
 
 const styles = StyleSheet.create({
+  mainContainer:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+  },
   container: {
     flexDirection: 'row',
   },

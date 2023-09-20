@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   tite:{
     fontSize: 35,
     fontWeight: '900',
-    marginBottom:100,
+    marginBottom:'2%',
     
   }
 });

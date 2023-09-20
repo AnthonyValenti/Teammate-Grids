@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import allNames from '../assets/allNames';
 
 interface SearchModalProps {
   playerName1: string | null;
@@ -10,13 +11,26 @@ interface SearchModalProps {
 }
 
 const SearchModal: React.FC<SearchModalProps> = ({playerName1,playerName2, isVisible, onClose, onSubmit }) => {
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState<string>('');
+  const [suggestions, setSuggestions] = useState<string[]>(['']);
+  const [suggestionVisible, setSuggestionVisible] = useState<boolean>(false);
+  const [selectedItem, setSelectedItem] = useState<string>(''); 
 
   const handleSubmit = () => {
     onSubmit(searchText);
+    setSuggestionVisible(false);
     setSearchText("");
     onClose();
   };
+
+  useEffect(() => {
+    const filteredSuggestions = allNames.filter((name: string) =>
+      name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setSuggestions(filteredSuggestions);
+  }, [searchText]);
+
+
 
   return (
     <Modal
@@ -27,16 +41,31 @@ const SearchModal: React.FC<SearchModalProps> = ({playerName1,playerName2, isVis
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+          <TouchableOpacity onPress={() => {
+              setSuggestionVisible(false);
+              setSearchText('');
+              onClose();
+            }}
+             style={styles.closeButton}>
             <Text style={styles.closeButtonText}>X</Text>
           </TouchableOpacity>
           <Text style={styles.text}>{playerName1} - {playerName2}</Text>
           <TextInput
             placeholder="Search..."
             value={searchText}
-            onChangeText={setSearchText}
+            onChangeText={(newText)=>{
+              setSearchText(newText)
+              setSuggestionVisible(true)
+            }}
             style={styles.input}
           />
+          {suggestionVisible && (
+            <TouchableOpacity onPress={() => {
+              setSearchText(suggestions[0]);
+              setSuggestionVisible(false);
+            }
+          } style={styles.suggestionBox}><Text>{suggestions[0]}</Text></TouchableOpacity>
+          )}
           <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
             <Text style={styles.submitButtonText}>Submit</Text>
           </TouchableOpacity>
@@ -55,7 +84,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '50%',
-    height: '25%',
+    height: '30%',
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 8,
@@ -76,10 +105,10 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
     marginTop: '10%',
-    borderWidth: 1,
+    borderWidth: 3,
     borderColor: 'gray',
-    marginBottom: 10,
     borderRadius: 5,
+    fontWeight: 'bold',
   },
   submitButton: {
     backgroundColor: 'blue',
@@ -95,6 +124,19 @@ const styles = StyleSheet.create({
     fontWeight: '500',
 
   },
+  suggestionBox:{
+    width: '100%',
+    height: '20%',
+    padding: 10,
+    borderWidth: 3,
+    borderTopWidth: 0,
+    borderColor: 'gray',
+    marginBottom: 10,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    fontWeight: 'bold',
+
+  }
 });
 
 export default SearchModal;

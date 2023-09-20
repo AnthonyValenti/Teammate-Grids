@@ -7,6 +7,8 @@ import axios from 'axios';
 
 const PlayerGrid: React.FC = () => {
   const [playerNames, setPlayerNames] = useState<string[][]>([['', ''], ['', '']]);
+  const [solutions, setSolutions] = useState<string[][]>([['', ''], ['', '']]);
+  const [remainingGuesses,setRemainingGuesses] = useState<number>(4);
   const [enteredNames, setEnteredNames] = useState<string[][]>([['', ''], ['', '']]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedRow, setSelectedRow] = useState<number>(0);
@@ -16,54 +18,65 @@ const PlayerGrid: React.FC = () => {
   const initialCellColors: string[][] = [['white', 'white'], ['white', 'white']];
   const [cellColors, setCellColors] = useState<string[][]>(initialCellColors);
   const [refreshingPlayers,setRefreshingPlayers] = useState<boolean>(true);
+  const [isClickable,setIsClickable] = useState<string[][]>([['true', 'true'], ['true', 'true']]);
 
 
   //this is a temporary test method
-  const checkAnswer = async(row: number, col: number,searchText: string): Promise<boolean> => {
-    //get a list of potential answers for player1,player2 and check if searchText is in this list
-    const postData={"playerNames":[playerName1,playerName2,searchText]};
-    try {
-      const response = await axios.post('https://teammate-grids-server.onrender.com/validate',postData); // replace hosted API endpoint
-      if (response.data.msg == "correct") {
+  const checkAnswer = (row: number, col: number,searchText: string) => {
+      setRemainingGuesses(remainingGuesses-1);
+      isClickable[row-1][col-1]='false';
+      setIsClickable(isClickable);
+      if(solutions[row-1][col-1].indexOf(searchText)!==-1){
         const newColors=[...cellColors];
         newColors[row - 1] = [...cellColors[row - 1]];
         newColors[row - 1][col - 1] = 'rgba(0, 128, 0, 0.5)';
         setCellColors(newColors);
-        return true;
       }
       else{
         const newColors=[...cellColors];
         newColors[row - 1] = [...cellColors[row - 1]];
         newColors[row - 1][col - 1] = 'rgba(255, 0, 0, 0.5)';
         setCellColors(newColors);
-        return false;
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      return false;
-    }
+
   }
 
   useEffect(() => {
     getPlayerNames().then((response) => {
-      playerNames[0][0]=response.pairs[0][0];
-      playerNames[1][0]=response.pairs[0][1];
-      playerNames[0][1]=response.pairs[1][0];
-      playerNames[1][1]=response.pairs[1][1];
+      playerNames[0][0]=response.rowPlayer1;
+      playerNames[1][0]=response.colPlayer1;
+      playerNames[0][1]=response.rowPlayer2;
+      playerNames[1][1]=response.colPlayer2;
+
+      solutions[0][0]=response.solution0_0;
+      solutions[1][0]=response.solution1_0;
+      solutions[0][1]=response.solution0_1;
+      solutions[1][1]=response.solution1_1;
       setPlayerNames(playerNames);
+      setSolutions(solutions)
       setRefreshingPlayers(false);
     });
   }, []);
+
   const handleRefreshClick =() =>{
     setEnteredNames([['', ''], ['', '']]);
     setCellColors([['white', 'white'], ['white', 'white']]);
+    setRemainingGuesses(4);
+    setIsClickable([['true', 'true'], ['true', 'true']])
     getPlayerNames().then((response)=>{
-      playerNames[0][0]=response.pairs[0][0];
-      playerNames[1][0]=response.pairs[0][1];
-      playerNames[0][1]=response.pairs[1][0];
-      playerNames[1][1]=response.pairs[1][1];
-      setPlayerNames(playerNames);      
+      playerNames[0][0]=response.rowPlayer1;
+      playerNames[1][0]=response.colPlayer1;
+      playerNames[0][1]=response.rowPlayer2;
+      playerNames[1][1]=response.colPlayer2;
+
+      solutions[0][0]=response.solution0_0;
+      solutions[1][0]=response.solution1_0;
+      solutions[0][1]=response.solution0_1;
+      solutions[1][1]=response.solution1_1;
+      setPlayerNames(playerNames);
+      setSolutions(solutions)      
       setRefreshingPlayers(false);
+      console.log(response)
     });
   };
 
@@ -89,17 +102,19 @@ const PlayerGrid: React.FC = () => {
 
 
   const handleCellClick = (row: number, col: number) => {
-    setSelectedRow(row);
-    setSelectedCol(col);
-    setPlayerName1(playerNames[0][row - 1]);
-    setPlayerName2(playerNames[1][col - 1]);
-    setIsModalVisible(true);
+    if (isClickable[row-1][col-1]=='true'){
+      setSelectedRow(row);
+      setSelectedCol(col);
+      setPlayerName1(playerNames[0][row - 1]);
+      setPlayerName2(playerNames[1][col - 1]);
+      setIsModalVisible(true);
+    }
+
 
   };
 
   const renderTableCell = (row: number, col: number) => {
     return (
-
       <TouchableOpacity
         key={`${row}-${col}`}
         style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1] }]}
@@ -119,26 +134,32 @@ const PlayerGrid: React.FC = () => {
         onClose={closeModal}
         onSubmit={handleSearchSubmit}
       />
-
       <View style={styles.container}>
-        <Text style={styles.players} />
-        <Text style={styles.players}>{playerNames[1][0]}</Text>
-        <Text style={styles.players}>{playerNames[1][1]}</Text>
-      </View>
+        <View>
+          <View style={styles.container}>
+            <Text style={styles.players} />
+            <Text style={styles.players}>{playerNames[1][0]}</Text>
+            <Text style={styles.players}>{playerNames[1][1]}</Text>
+          </View>
 
-      <View style={styles.container}>
-        <Text style={styles.players}>{playerNames[0][0]}</Text>
-        {renderTableCell(1, 1)}
-        {renderTableCell(1, 2)}
-      </View>
+          <View style={styles.container}>
+            <Text style={styles.players}>{playerNames[0][0]}</Text>
+            {renderTableCell(1, 1)}
+            {renderTableCell(1, 2)}
+          </View>
 
-      <View style={styles.container}>
-        <Text style={styles.players}>{playerNames[0][1]}</Text>
-        {renderTableCell(2, 1)}
-        {renderTableCell(2, 2)}
-      </View>
+          <View style={styles.container}>
+            <Text style={styles.players}>{playerNames[0][1]}</Text>
+            {renderTableCell(2, 1)}
+            {renderTableCell(2, 2)}
+          </View>
 
-        <RefreshComponent onPress={handleRefreshClick} />
+          <RefreshComponent onPress={handleRefreshClick} />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text2}>Guesses: {remainingGuesses}/4</Text>
+        </View>
+      </View>
       <Modal
         transparent={true}
         animationType="slide"
@@ -158,18 +179,25 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
   },
+  textContainer: {
+    marginLeft: '22%',
+  },
   cell: {
     flex: 1,
     borderWidth: 1,
     borderColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 150,
-    width: 150,
+    width: 200,
+    height:200,
   },
   text: {
     fontSize: 18,
     fontWeight: '500',
+  },
+  text2:{
+    fontSize: 18,
+    fontWeight: '900',
   },
   players: {
     flex: 1,

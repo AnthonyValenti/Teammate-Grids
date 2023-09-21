@@ -12,13 +12,41 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Login'>
-        <Stack.Screen name="Teammate Grid" component={PlayerGrid}/>
-        <Stack.Screen name="Scores" component={PastScores}/>
+        <Stack.Screen name="Teammate Grid" component={PlayerGrid}
+          options={
+            {
+              title: "Teammate Grids",
+              headerStyle: {
+                backgroundColor: 'orangered',
+              },
+              headerTitleStyle: {
+                fontWeight: '900',
+                fontSize: 25,
+                color: 'white',
+              },
+            }
+          }
+        />
+        <Stack.Screen name="Scores" component={PastScores}
+          options={
+            {
+              title: "History",
+              headerStyle: {
+                backgroundColor: 'orangered',
+              },
+              headerTitleStyle: {
+                fontWeight: '900',
+                fontSize: 25,
+                color: 'white',
+              },
+            }
+          }
+        />
         <Stack.Screen name="Login" component={LoginPage}
           options={
             {
-              title:"Login",
-              headerStyle:{
+              title: "Login",
+              headerStyle: {
                 backgroundColor: 'dimgrey',
               },
               headerTitleStyle: {
@@ -28,7 +56,7 @@ export default function App() {
               },
             }
           }
-        
+
         />
       </Stack.Navigator>
 

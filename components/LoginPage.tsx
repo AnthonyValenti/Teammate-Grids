@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Button } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native';
 import axios from 'axios';
 
 
@@ -22,7 +20,7 @@ function LoginPage({ navigation }: any) {
             .then(response => {
                 if (response.data.msg == "ok") {
                     setLoginError(false)
-                    navigation.replace('Teammate Grid', {user: username})
+                    navigation.replace('Teammate Grid', { user: username })
                 } else {
                     setLoginError(true)
                 }
@@ -41,7 +39,7 @@ function LoginPage({ navigation }: any) {
             .then(response => {
                 if (response.data.msg == "ok") {
                     setRegisterError(false)
-                    navigation.replace('Teammate Grid', {user: username})
+                    navigation.replace('Teammate Grid', { user: username })
                 } else {
                     setRegisterError(true)
                 }
@@ -53,6 +51,10 @@ function LoginPage({ navigation }: any) {
 
     return (
         <View style={styles.container}>
+            <Image
+                source={require('../assets/logos.jpg')} // Replace with your image path
+                style={styles.backgroundImage}
+            />
             <View style={styles.container2}>
                 <Text style={styles.text1}>Teammate Grids</Text>
                 <View style={styles.spacer}></View>
@@ -76,7 +78,7 @@ function LoginPage({ navigation }: any) {
                 />
                 <View style={styles.spacer}></View>
                 <TouchableOpacity style={styles.button} onPress={() => hanleLogin()}>
-                    <Text style={styles.text2}>Login</Text>
+                    <Text style={styles.text2}>Log in</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => handleRegister()}>
                     <Text style={styles.text2}>Register</Text>
@@ -98,7 +100,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         backgroundColor: 'lightgrey',
-        opacity: 0.8,
     },
     spacer: {
         marginBottom: '20%'
@@ -117,7 +118,6 @@ const styles = StyleSheet.create({
         shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 10,
-        opacity: 0.9,
     },
     text1: {
         marginTop: '5%',
@@ -163,7 +163,13 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 10,
         opacity: 0.8,
-    }
+    },
+    backgroundImage: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        opacity: 0.5, // Adjust the opacity value as needed
+      },
 
 });
 

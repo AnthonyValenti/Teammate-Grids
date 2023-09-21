@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import axios from 'axios';
 
 
@@ -36,6 +34,10 @@ const PastScores: React.FC = ({ navigation, route }: any) => {
 
     return (
         <View style={styles.container}>
+            <Image
+                source={require('../assets/logos.jpg')} // Replace with your image path
+                style={styles.backgroundImage}
+            />
             <View style={styles.container2}>
                 <Text style={styles.text1}>Past Games</Text>
                 <ScrollView style={styles.containerTable}>
@@ -88,7 +90,6 @@ const styles = StyleSheet.create({
         shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 10,
-        opacity: 0.9,
     },
     text1: {
         marginTop: '5%',
@@ -137,6 +138,12 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
+      },
+      backgroundImage: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        opacity: 0.5, // Adjust the opacity value as needed
       },
 
 });

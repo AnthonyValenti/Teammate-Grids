@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const PastScores: React.FC = ({ navigation, route }: any) => {
     const [scores, setScores] = useState<string[][]>([['']]);
-    const [username,setUsername] = useState<string>('anthony');
+    const [username,setUsername] = useState<string>(route.params.user);
 
 
 

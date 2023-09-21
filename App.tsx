@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Scores'>
+      <Stack.Navigator initialRouteName='Login'>
         <Stack.Screen name="Teammate Grid" component={PlayerGrid}/>
         <Stack.Screen name="Scores" component={PastScores}/>
         <Stack.Screen name="Login" component={LoginPage}

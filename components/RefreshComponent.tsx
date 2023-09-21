@@ -16,15 +16,16 @@ const RefreshButton: React.FC<RefreshButtonProps> = ({ onPress }) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'blue', 
+    backgroundColor: 'orangered', 
     borderRadius: 15,
     justifyContent: 'center',
     height: '100%',
-    width:'50%'
+    width:'50%',
+
   },
   text: {
     color: 'white',
-    fontWeight: '800',
+    fontWeight: '900',
     textAlign: 'center',
   },
 });

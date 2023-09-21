@@ -8,6 +8,7 @@ import axios from 'axios';
 const PastScores: React.FC = ({ navigation, route }: any) => {
     const [scores, setScores] = useState<string[][]>([['']]);
     const [username,setUsername] = useState<string>(route.params.user);
+    //const [username, setUsername] = useState<string>('anthony');
 
 
 
@@ -16,7 +17,7 @@ const PastScores: React.FC = ({ navigation, route }: any) => {
             const data = {
                 name: username,
             };
-            const response = await axios.post('https://teammate-grids-server.onrender.com/scores', data); // replace hosted API endpoint
+            const response = await axios.post('https://teammate-grids-server.onrender.com/scores', data);
             setScores(response.data.scores);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -35,7 +36,7 @@ const PastScores: React.FC = ({ navigation, route }: any) => {
     return (
         <View style={styles.container}>
             <Image
-                source={require('../assets/logos.jpg')} // Replace with your image path
+                source={require('../assets/logos.jpg')}
                 style={styles.backgroundImage}
             />
             <View style={styles.container2}>
@@ -74,12 +75,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         backgroundColor: 'lightgrey',
-        opacity: 0.8,
     },
     container2: {
         flex: 1,
         marginTop: '5%',
-        backgroundColor: 'dimgrey',
+        backgroundColor: 'midnightblue',
         marginBottom: '5%',
         alignItems: 'center',
         alignContent: 'center',
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '900',
         marginBottom: '10%',
+        color: 'white',
 
     },
     textItemHeader: {
@@ -127,24 +128,24 @@ const styles = StyleSheet.create({
 
     },
     goBackButton: {
-        backgroundColor: 'blue', 
+        backgroundColor: 'orangered', 
         borderRadius: 15,
-        height: '5%',
+        height: '8%',
         width: '15%',
         marginBottom: '5%',
         justifyContent: 'center',
       },
       goBackText: {
         color: 'white',
-        fontWeight: 'bold',
+        fontWeight: '900',
         textAlign: 'center',
       },
       backgroundImage: {
         position: 'absolute',
         width: '100%',
         height: '100%',
-        opacity: 0.5, // Adjust the opacity value as needed
-      },
+        opacity: 0.05,
+    },
 
 });
 

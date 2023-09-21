@@ -52,7 +52,7 @@ function LoginPage({ navigation }: any) {
     return (
         <View style={styles.container}>
             <Image
-                source={require('../assets/logos.jpg')} // Replace with your image path
+                source={require('../assets/logos.jpg')} 
                 style={styles.backgroundImage}
             />
             <View style={styles.container2}>
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     container2: {
         flex: 1,
         marginTop: '5%',
-        backgroundColor: 'dimgrey',
+        backgroundColor: 'midnightblue',
         marginBottom: '5%',
         alignItems: 'center',
         alignContent: 'center',
@@ -162,13 +162,12 @@ const styles = StyleSheet.create({
         shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 10,
-        opacity: 0.8,
     },
     backgroundImage: {
         position: 'absolute',
         width: '100%',
         height: '100%',
-        opacity: 0.5, // Adjust the opacity value as needed
+        opacity: 0.5,
       },
 
 });

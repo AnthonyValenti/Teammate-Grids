@@ -17,7 +17,7 @@ export default function App() {
             {
               title: "Teammate Grids",
               headerStyle: {
-                backgroundColor: 'orangered',
+                backgroundColor: 'midnightblue',
               },
               headerTitleStyle: {
                 fontWeight: '900',
@@ -32,7 +32,7 @@ export default function App() {
             {
               title: "History",
               headerStyle: {
-                backgroundColor: 'orangered',
+                backgroundColor: 'midnightblue',
               },
               headerTitleStyle: {
                 fontWeight: '900',
@@ -47,7 +47,7 @@ export default function App() {
             {
               title: "Login",
               headerStyle: {
-                backgroundColor: 'dimgrey',
+                backgroundColor: 'midnightblue',
               },
               headerTitleStyle: {
                 fontWeight: '900',

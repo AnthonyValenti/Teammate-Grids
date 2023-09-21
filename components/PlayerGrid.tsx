@@ -26,7 +26,7 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
   const [score, setScore] = useState<number>(0);
   const [gameDone, setGameDone] = useState<boolean>(false);
   const [username, setUsername] = useState<string>(route.params.user);
-
+  //const [username, setUsername] = useState<string>('anthony');
 
 
   //this is a temporary test method
@@ -68,7 +68,7 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
       const data = {
         name: player
       }
-      const response = await axios.post('https://teammate-grids-server.onrender.com/points', data); // replace hosted API endpoint
+      const response = await axios.post('https://teammate-grids-server.onrender.com/points', data);
       const newScore = score + response.data.mult;
       setScore(newScore);
     } catch (error) {
@@ -87,7 +87,7 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
         username: username,
         score: currentScore
       }
-      const response = await axios.post('https://teammate-grids-server.onrender.com/savePoints', data); // replace hosted API endpoint
+      const response = await axios.post('https://teammate-grids-server.onrender.com/savePoints', data);
       console.log(response.data)
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -148,7 +148,7 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
   const getPlayerNames = async () => {
     setRefreshingPlayers(true);
     try {
-      const response = await axios.get('https://teammate-grids-server.onrender.com/playerNames'); // replace hosted API endpoint
+      const response = await axios.get('https://teammate-grids-server.onrender.com/playerNames');
       return (response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -186,41 +186,45 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
   const renderTableCell = (row: number, col: number) => {
     return (
       <>
-      {row-1 === 0 && col-1 === 0 ? (
-        <TouchableOpacity
-          style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderTopLeftRadius: 15}]}
-          onPress={() => handleCellClick(row, col)}
-        >
-          <Text style={styles.text}>{enteredNames[row - 1][col - 1]}</Text>
-        </TouchableOpacity>
-      ) : row-1 === 1 && col-1 ===0 ? (
-        <TouchableOpacity
-          style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderBottomLeftRadius: 15}]}
-          onPress={() => handleCellClick(row, col)}
-        >
-          <Text style={styles.text}>{enteredNames[row - 1][col - 1]}</Text>
-        </TouchableOpacity>      
-        ) : row-1 === 0 && col-1 === 1? (
+        {row - 1 === 0 && col - 1 === 0 ? (
           <TouchableOpacity
-          style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderTopRightRadius: 15}]}
-          onPress={() => handleCellClick(row, col)}
-        >
-          <Text style={styles.text}>{enteredNames[row - 1][col - 1]}</Text>
-        </TouchableOpacity>      
-        ) : row-1 ===1 && col-1 ===1 ?(
+            style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderTopLeftRadius: 15 }]}
+            onPress={() => handleCellClick(row, col)}
+          >
+            <Text style={styles.text}>{enteredNames[row - 1][col - 1]}</Text>
+          </TouchableOpacity>
+        ) : row - 1 === 1 && col - 1 === 0 ? (
           <TouchableOpacity
-          style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderBottomRightRadius: 15}]}
-          onPress={() => handleCellClick(row, col)}
-        >
-          <Text style={styles.text}>{enteredNames[row - 1][col - 1]}</Text>
-        </TouchableOpacity>
-      ): null }
-    </>
+            style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderBottomLeftRadius: 15 }]}
+            onPress={() => handleCellClick(row, col)}
+          >
+            <Text style={styles.text}>{enteredNames[row - 1][col - 1]}</Text>
+          </TouchableOpacity>
+        ) : row - 1 === 0 && col - 1 === 1 ? (
+          <TouchableOpacity
+            style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderTopRightRadius: 15 }]}
+            onPress={() => handleCellClick(row, col)}
+          >
+            <Text style={styles.text}>{enteredNames[row - 1][col - 1]}</Text>
+          </TouchableOpacity>
+        ) : row - 1 === 1 && col - 1 === 1 ? (
+          <TouchableOpacity
+            style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderBottomRightRadius: 15 }]}
+            onPress={() => handleCellClick(row, col)}
+          >
+            <Text style={styles.text}>{enteredNames[row - 1][col - 1]}</Text>
+          </TouchableOpacity>
+        ) : null}
+      </>
     );
   };
 
   return (
     <View style={styles.mainContainer}>
+      <Image
+        source={require('../assets/logos.jpg')}
+        style={styles.backgroundImage}
+      />
       <SearchModal
         playerName1={playerName1}
         playerName2={playerName2}
@@ -323,13 +327,14 @@ const styles = StyleSheet.create({
   },
   textHeader: {
     fontSize: 18,
-    fontWeight: '700',
-    opacity: 0.5,
+    fontWeight: '900',
+    color: 'black',
   },
   textValue: {
     fontSize: 35,
     fontWeight: '900',
     marginBottom: '80%',
+    color: 'darkblue',
   },
   players: {
     flex: 1,
@@ -350,24 +355,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   pastScoresButton: {
-    backgroundColor: 'blue',
+    backgroundColor: 'orangered',
     borderRadius: 15,
     justifyContent: 'center',
     marginLeft: '20%',
     height: '100%',
-    width: '50%'
-
+    width: '50%',
   },
   scoresButtonText: {
     color: 'white',
-    fontWeight: '800',
+    fontWeight: '900',
     textAlign: 'center',
   },
   backgroundImage: {
     position: 'absolute',
     width: '100%',
     height: '100%',
-    opacity: 0.5, // Adjust the opacity value as needed
+    opacity: 0.05,
   },
 });
 

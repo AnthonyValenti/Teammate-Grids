@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Modal } fr
 import SearchModal from './SearchModal';
 import RefreshComponent from './RefreshComponent';
 import axios from 'axios';
+import GuessAgainModal from './GuessAgainModal';
 
 
 const PlayerGrid: React.FC = () => {
@@ -19,24 +20,36 @@ const PlayerGrid: React.FC = () => {
   const [cellColors, setCellColors] = useState<string[][]>(initialCellColors);
   const [refreshingPlayers,setRefreshingPlayers] = useState<boolean>(true);
   const [isClickable,setIsClickable] = useState<string[][]>([['true', 'true'], ['true', 'true']]);
+  const [guessedNames,setGuessedNames] = useState<string[]>(['']);
+  const [guessAgainModal,setGuessAgainModal] = useState<boolean>(false);
+
 
 
   //this is a temporary test method
   const checkAnswer = (row: number, col: number,searchText: string) => {
-      setRemainingGuesses(remainingGuesses-1);
-      isClickable[row-1][col-1]='false';
-      setIsClickable(isClickable);
-      if(solutions[row-1][col-1].indexOf(searchText)!==-1){
-        const newColors=[...cellColors];
-        newColors[row - 1] = [...cellColors[row - 1]];
-        newColors[row - 1][col - 1] = 'rgba(0, 128, 0, 0.5)';
-        setCellColors(newColors);
+      if(guessedNames.includes(searchText)){
+        setGuessAgainModal(true);
       }
       else{
-        const newColors=[...cellColors];
-        newColors[row - 1] = [...cellColors[row - 1]];
-        newColors[row - 1][col - 1] = 'rgba(255, 0, 0, 0.5)';
-        setCellColors(newColors);
+        enteredNames[selectedRow - 1][selectedCol - 1] = searchText;
+        guessedNames.push(searchText)
+        setEnteredNames(enteredNames);
+        setGuessedNames(guessedNames)
+        setRemainingGuesses(remainingGuesses-1);
+        isClickable[row-1][col-1]='false';
+        setIsClickable(isClickable);
+        if(solutions[row-1][col-1].includes(searchText)){
+          const newColors=[...cellColors];
+          newColors[row - 1] = [...cellColors[row - 1]];
+          newColors[row - 1][col - 1] = 'rgba(0, 128, 0, 0.5)';
+          setCellColors(newColors);
+        }
+        else{
+          const newColors=[...cellColors];
+          newColors[row - 1] = [...cellColors[row - 1]];
+          newColors[row - 1][col - 1] = 'rgba(255, 0, 0, 0.5)';
+          setCellColors(newColors);
+        }
       }
 
   }
@@ -55,6 +68,7 @@ const PlayerGrid: React.FC = () => {
       setPlayerNames(playerNames);
       setSolutions(solutions)
       setRefreshingPlayers(false);
+      setGuessedNames(['']);
     });
   }, []);
 
@@ -76,6 +90,7 @@ const PlayerGrid: React.FC = () => {
       setPlayerNames(playerNames);
       setSolutions(solutions)      
       setRefreshingPlayers(false);
+      setGuessedNames(['']);
       console.log(response)
     });
   };
@@ -92,12 +107,13 @@ const PlayerGrid: React.FC = () => {
   const closeModal = () => {
     setIsModalVisible(false);
   };
+  const closeModalGuessAgain = () => {
+    setGuessAgainModal(false);
+  };
+  
 
   const handleSearchSubmit = async (searchText: string) => {
     checkAnswer(selectedRow,selectedCol,searchText);
-    enteredNames[selectedRow - 1][selectedCol - 1] = searchText;
-    setEnteredNames(enteredNames);
-    console.log(enteredNames);
   };
 
 
@@ -116,7 +132,6 @@ const PlayerGrid: React.FC = () => {
   const renderTableCell = (row: number, col: number) => {
     return (
       <TouchableOpacity
-        key={`${row}-${col}`}
         style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1] }]}
         onPress={() => handleCellClick(row, col)}
       >
@@ -134,6 +149,7 @@ const PlayerGrid: React.FC = () => {
         onClose={closeModal}
         onSubmit={handleSearchSubmit}
       />
+      <GuessAgainModal isVisible={guessAgainModal} onClose={closeModalGuessAgain}/>
       <View style={styles.container}>
         <View>
           <View style={styles.container}>
@@ -143,7 +159,7 @@ const PlayerGrid: React.FC = () => {
           </View>
 
           <View style={styles.container}>
-            <Text style={styles.players}>{playerNames[0][0]}</Text>
+           <Text style={styles.players}>{playerNames[0][0]}</Text>
             {renderTableCell(1, 1)}
             {renderTableCell(1, 2)}
           </View>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import allNames from '../assets/allNames';
 
 interface SearchModalProps {

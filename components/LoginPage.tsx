@@ -22,7 +22,7 @@ function LoginPage({ navigation }: any) {
             .then(response => {
                 if (response.data.msg == "ok") {
                     setLoginError(false)
-                    navigation.replace('Teammate Grid')
+                    navigation.replace('Teammate Grid', {user: username})
                 } else {
                     setLoginError(true)
                 }
@@ -41,7 +41,7 @@ function LoginPage({ navigation }: any) {
             .then(response => {
                 if (response.data.msg == "ok") {
                     setRegisterError(false)
-                    navigation.replace('Teammate Grid')
+                    navigation.replace('Teammate Grid', {user: username})
                 } else {
                     setRegisterError(true)
                 }

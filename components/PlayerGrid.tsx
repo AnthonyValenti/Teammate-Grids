@@ -4,9 +4,10 @@ import SearchModal from './SearchModal';
 import RefreshComponent from './RefreshComponent';
 import axios from 'axios';
 import GuessAgainModal from './GuessAgainModal';
+import GameOverModal from './GameOverModal';
 
 
-const PlayerGrid: React.FC = () => {
+const PlayerGrid: React.FC = ({navigation,route}: any) => {
   const [playerNames, setPlayerNames] = useState<string[][]>([['', ''], ['', '']]);
   const [solutions, setSolutions] = useState<string[][]>([['', ''], ['', '']]);
   const [remainingGuesses,setRemainingGuesses] = useState<number>(4);
@@ -22,6 +23,9 @@ const PlayerGrid: React.FC = () => {
   const [isClickable,setIsClickable] = useState<string[][]>([['true', 'true'], ['true', 'true']]);
   const [guessedNames,setGuessedNames] = useState<string[]>(['']);
   const [guessAgainModal,setGuessAgainModal] = useState<boolean>(false);
+  const [score,setScore] = useState<number>(0);
+  const [gameDone,setGameDone] = useState<boolean>(false);
+  const [username,setUsername] = useState<string>(route.params.user);
 
 
 
@@ -38,21 +42,65 @@ const PlayerGrid: React.FC = () => {
         setRemainingGuesses(remainingGuesses-1);
         isClickable[row-1][col-1]='false';
         setIsClickable(isClickable);
+        //Correct
         if(solutions[row-1][col-1].includes(searchText)){
           const newColors=[...cellColors];
           newColors[row - 1] = [...cellColors[row - 1]];
           newColors[row - 1][col - 1] = 'rgba(0, 128, 0, 0.5)';
+          handdleScore(searchText)
           setCellColors(newColors);
+
         }
+        //Incorect
         else{
           const newColors=[...cellColors];
           newColors[row - 1] = [...cellColors[row - 1]];
           newColors[row - 1][col - 1] = 'rgba(255, 0, 0, 0.5)';
           setCellColors(newColors);
         }
+
       }
 
   }
+
+  const handdleScore = async (player: string)=>{
+      try {
+        const data = {
+          name: player
+        }
+        const response = await axios.post('https://teammate-grids-server.onrender.com/points',data); // replace hosted API endpoint
+        const newScore = score + response.data.mult;
+        setScore(newScore);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+  };
+
+  const handlePastScores = ()=>{
+    navigation.replace('Scores', {user: username})
+
+  }
+
+  const saveScore = async (currentScore: number)=>{
+    try {
+      const data = {
+        username: username,
+        score: currentScore
+      }
+      const response = await axios.post('https://teammate-grids-server.onrender.com/savePoints',data); // replace hosted API endpoint
+      console.log(response.data)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+};
+
+  useEffect(() => {
+    if(remainingGuesses==0){
+      saveScore(score);
+      setGameDone(true);
+      
+    }
+  }, [remainingGuesses]);
 
   useEffect(() => {
     getPlayerNames().then((response) => {
@@ -69,6 +117,7 @@ const PlayerGrid: React.FC = () => {
       setSolutions(solutions)
       setRefreshingPlayers(false);
       setGuessedNames(['']);
+
     });
   }, []);
 
@@ -91,6 +140,7 @@ const PlayerGrid: React.FC = () => {
       setSolutions(solutions)      
       setRefreshingPlayers(false);
       setGuessedNames(['']);
+      setScore(0);
       console.log(response)
     });
   };
@@ -109,6 +159,10 @@ const PlayerGrid: React.FC = () => {
   };
   const closeModalGuessAgain = () => {
     setGuessAgainModal(false);
+  };
+
+  const closeModalGameDone = () => {
+    setGameDone(false);
   };
   
 
@@ -150,6 +204,7 @@ const PlayerGrid: React.FC = () => {
         onSubmit={handleSearchSubmit}
       />
       <GuessAgainModal isVisible={guessAgainModal} onClose={closeModalGuessAgain}/>
+      <GameOverModal score={score} isVisible={gameDone} onClose={closeModalGameDone}/>
       <View style={styles.container}>
         <View>
           <View style={styles.container}>
@@ -170,10 +225,10 @@ const PlayerGrid: React.FC = () => {
             {renderTableCell(2, 2)}
           </View>
 
-          <RefreshComponent onPress={handleRefreshClick} />
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.text2}>Guesses: {remainingGuesses}/4</Text>
+          <Text style={styles.textGuesses}>Guesses: {remainingGuesses}/4</Text>
+          <Text style={styles.textScore}>Score: {score}</Text>
         </View>
       </View>
       <Modal
@@ -186,6 +241,12 @@ const PlayerGrid: React.FC = () => {
           <Text style={styles.text}>Loading players...</Text>
         </View>
       </Modal>
+      <View style={styles.bottomButtonsContainer}>
+            <RefreshComponent onPress={handleRefreshClick} />
+            <TouchableOpacity style={styles.pastScoresButton} onPress={handlePastScores}>
+              <Text style={styles.scoresButtonText}>Past Scores</Text>
+            </TouchableOpacity>
+          </View>
     </View>
   );
 };
@@ -204,6 +265,15 @@ const styles = StyleSheet.create({
   textContainer: {
     marginLeft: '22%',
   },
+  bottomButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft:'5%',
+    marginTop: '2%',
+    height: '8%',
+    width: '20%'
+  },
   cell: {
     flex: 1,
     borderWidth: 1,
@@ -217,9 +287,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
   },
-  text2:{
+  textGuesses:{
     fontSize: 18,
     fontWeight: '900',
+  },
+  textScore:{
+    fontSize: 18,
+    fontWeight: '900',
+    marginTop: '20%',
   },
   players: {
     flex: 1,
@@ -238,7 +313,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  }
+  },
+  pastScoresButton: {
+    backgroundColor: 'blue', 
+    borderRadius: 15,
+    justifyContent: 'center',
+    marginLeft: '20%',
+    height: '100%',
+    width: '50%'
+
+  },
+  scoresButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 
 });
 

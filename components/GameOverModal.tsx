@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-interface GuessAgainModal {
+interface GameOverModal {
+  score: number
   isVisible: boolean;
   onClose: () => void;
 }
 
-const GuessAgainModal: React.FC<GuessAgainModal> = ({isVisible, onClose}) => {
+const GameOverModal: React.FC<GameOverModal> = ({score,isVisible, onClose}) => {
 
 
   return (
@@ -24,8 +25,8 @@ const GuessAgainModal: React.FC<GuessAgainModal> = ({isVisible, onClose}) => {
              style={styles.closeButton}>
             <Text style={styles.closeButtonText}>X</Text>
           </TouchableOpacity>
-          <Text style={styles.text}>Oops!</Text>
-          <Text style={styles.text2}>You already guessed that player, choose another name!</Text>
+          <Text style={styles.text}>Game Over!</Text>
+          <Text style={styles.text2}>You achieved a score of {score}, nice job!</Text>
         </View>
       </View>
     </Modal>
@@ -71,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GuessAgainModal;
+export default GameOverModal;

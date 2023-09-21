@@ -8,29 +8,19 @@ interface RefreshButtonProps {
 
 const RefreshButton: React.FC<RefreshButtonProps> = ({ onPress }) => {
   return (
-    <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={styles.text}>Refresh</Text>
       </TouchableOpacity>
-
-    </View>
-
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   button: {
     backgroundColor: 'blue', 
     borderRadius: 15,
     justifyContent: 'center',
-    marginTop: '5%',
     height: '100%',
-    width: '20%'
+    width:'50%'
   },
   text: {
     color: 'white',

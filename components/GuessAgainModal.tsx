@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
 interface GuessAgainModal {
   isVisible: boolean;
@@ -40,8 +43,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    width: '30%',
-    height: '20%',
+    width: isMobile ? '60%':'30%',
+    height: isMobile ? '40%':'20%',
     backgroundColor: 'lightgrey',
     padding: 20,
     borderRadius: 8,
@@ -61,10 +64,11 @@ const styles = StyleSheet.create({
   text:{
     fontSize: 20,
     fontWeight: '900',
+    color: 'white'
 
   },
   text2:{
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: '500',
     marginTop:'8%',
 

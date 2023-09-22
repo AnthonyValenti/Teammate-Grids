@@ -380,12 +380,12 @@ const styles = StyleSheet.create({
     marginTop: isMobile ? '50%' : '10%',
   },
   textHeader: {
-    fontSize: 18,
+    fontSize: isMobile ? 15: 18,
     fontWeight: '900',
     color: 'black',
   },
   textValue: {
-    fontSize: 35,
+    fontSize: isMobile ? 30: 35,
     fontWeight: '900',
     marginBottom: '50%',
     color: 'darkblue',

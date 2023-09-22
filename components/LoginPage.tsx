@@ -85,12 +85,13 @@ function LoginPage({ navigation }: any) {
                 <TouchableOpacity style={styles.button} onPress={() => handleRegister()}>
                     <Text style={styles.text2}>Register</Text>
                 </TouchableOpacity>
-                {loginErrorShow && (
-                    <Text style={styles.errorText}>Error account does not exists!</Text>
-                )}
-                {registerErrorShow && (
-                    <Text style={styles.errorText}>Error username exists already!</Text>
-                )}
+                    {loginErrorShow && (
+                        <Text style={styles.errorText}>Error account does not exists!</Text>
+                    )}
+                    {registerErrorShow && (
+                        <Text style={styles.errorText}>Error username exists already!</Text>
+                    )}
+
             </View>
         </View>
     );
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         borderRadius: 10,
         width: isMobile ? '80%' : '30%',
-        height: '80%',
+        height: isMobile ? '95%' : '80%',
         shadowColor: 'black',
         shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.3,

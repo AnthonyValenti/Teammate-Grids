@@ -96,16 +96,15 @@ function LoginPage({ navigation }: any) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         alignItems: 'center',
         alignContent: 'center',
         backgroundColor: 'lightgrey',
+        height: '100%',
     },
     spacer: {
         marginBottom: '20%'
     },
     container2: {
-        flex: 1,
         marginTop: '5%',
         backgroundColor: 'midnightblue',
         marginBottom: '5%',
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         borderRadius: 10,
         width: '30%',
-        height: '50%',
+        height: '80%',
         shadowColor: 'black',
         shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.3,

@@ -27,8 +27,8 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
   const [guessAgainModal, setGuessAgainModal] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [gameDone, setGameDone] = useState<boolean>(false);
-  //const [username, setUsername] = useState<string>(route.params.user);
-  const [username, setUsername] = useState<string>('anthony');
+  const [username, setUsername] = useState<string>(route.params.user);
+  //const [username, setUsername] = useState<string>('anthony');
 
 
   //this is a temporary test method

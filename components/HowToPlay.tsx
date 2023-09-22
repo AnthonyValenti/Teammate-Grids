@@ -27,7 +27,13 @@ const HowToPlay: React.FC<HowToPlayProps> = ({ isVisible , onClose }) => {
         <Text style={styles.text2}>Select a player that has played with both the row and col player in the regular season</Text>
         <Text style={styles.text2}>The only seasons under consideration are 20/21 to 22/23</Text>
         <Text style={styles.text2}>You can only use a player name once</Text>
-        <Text style={styles.text2}>More points are awarded for selecting a player with fewer points in the 20/21 to 20/23 seasons</Text>
+        <Text style={styles.text2}>More points are awarded for selecting a player with fewer points between the 20/21 and 20/23 seasons</Text>
+        <Text style={styles.text3}>Top 25% in points: 1 point </Text>
+        <Text style={styles.text3}>Top 25-50% in points: 2 points </Text>
+        <Text style={styles.text3}>Top 50-75% in points: 3 points </Text>
+        <Text style={styles.text3}>Bottom 25% in points: 4 points </Text>
+
+
 
 
       </View>
@@ -45,7 +51,7 @@ const styles = StyleSheet.create({
     },
     modalContent: {
       width: '40%',
-      height: '50%',
+      height: '60%',
       backgroundColor: 'darkblue',
       padding: 20,
       borderRadius: 8,
@@ -70,6 +76,14 @@ const styles = StyleSheet.create({
     },
     text2:{
         fontSize: 16,
+        fontWeight: '900',
+        color: 'white',
+        marginTop:'5%',
+        textAlign: 'left'
+    
+      },
+      text3:{
+        fontSize: 14,
         fontWeight: '900',
         color: 'white',
         marginTop:'5%',

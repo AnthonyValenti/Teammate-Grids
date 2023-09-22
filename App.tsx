@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Teammate Grid'>
+      <Stack.Navigator initialRouteName='Login'>
         <Stack.Screen name="Teammate Grid" component={PlayerGrid}
           options={
             {

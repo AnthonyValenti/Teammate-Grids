@@ -43,9 +43,9 @@ const styles = StyleSheet.create({
   modalContent: {
     width: '30%',
     height: '20%',
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'darkblue',
     padding: 20,
-    borderRadius: 8,
+    borderRadius: 10,
     alignItems: 'center',
   },
   closeButton: {
@@ -62,12 +62,14 @@ const styles = StyleSheet.create({
   text:{
     fontSize: 20,
     fontWeight: '900',
+    color: 'white',
 
   },
   text2:{
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: '500',
     marginTop:'8%',
+    color: "white",
 
   },
 });

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Image } from 'react-native';
 import SearchModal from './SearchModal';
 import RefreshComponent from './RefreshComponent';
+import HowToPlay from './HowToPlay';
 import axios from 'axios';
 import GuessAgainModal from './GuessAgainModal';
 import GameOverModal from './GameOverModal';
@@ -13,6 +14,7 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
   const [remainingGuesses, setRemainingGuesses] = useState<number>(4);
   const [enteredNames, setEnteredNames] = useState<string[][]>([['', ''], ['', '']]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [howToPlayVisible, setHowToPlayVisible] = useState(false);
   const [selectedRow, setSelectedRow] = useState<number>(0);
   const [selectedCol, setSelectedCol] = useState<number>(0);
   const [playerName1, setPlayerName1] = useState<string | null>(null);
@@ -25,8 +27,8 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
   const [guessAgainModal, setGuessAgainModal] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [gameDone, setGameDone] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>(route.params.user);
-  //const [username, setUsername] = useState<string>('anthony');
+  //const [username, setUsername] = useState<string>(route.params.user);
+  const [username, setUsername] = useState<string>('anthony');
 
 
   //this is a temporary test method
@@ -79,6 +81,9 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
   const handlePastScores = () => {
     navigation.replace('Scores', { user: username })
 
+  }
+  const howToPlay = () => {
+    setHowToPlayVisible(true);
   }
 
   const saveScore = async (currentScore: number) => {
@@ -156,6 +161,10 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
   };
   const closeModal = () => {
     setIsModalVisible(false);
+  };
+
+  const closeHowToPlay = () => {
+    setHowToPlayVisible(false);
   };
   const closeModalGuessAgain = () => {
     setGuessAgainModal(false);
@@ -277,6 +286,10 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
         <TouchableOpacity style={styles.pastScoresButton} onPress={handlePastScores}>
           <Text style={styles.scoresButtonText}>Past Scores</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.pastScoresButton} onPress={howToPlay}>
+          <Text style={styles.scoresButtonText}>How to play</Text>
+        </TouchableOpacity>
+        <HowToPlay isVisible={howToPlayVisible} onClose={closeHowToPlay}/>
       </View>
     </View>
   );
@@ -298,7 +311,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: '10%',
     marginTop: '2%',
     height: '8%',
     width: '20%'

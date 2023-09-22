@@ -1,6 +1,9 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, View, Dimensions} from 'react-native';
 
+
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 interface RefreshButtonProps {
   onPress: () => void;
   
@@ -20,7 +23,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
     height: '100%',
-    width:'50%',
+    width: isMobile ? '90%' : '50%',
 
   },
   text: {

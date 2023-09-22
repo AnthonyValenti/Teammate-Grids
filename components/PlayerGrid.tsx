@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Image, Dimensions } from 'react-native';
 import SearchModal from './SearchModal';
 import RefreshComponent from './RefreshComponent';
 import HowToPlay from './HowToPlay';
@@ -7,6 +7,8 @@ import axios from 'axios';
 import GuessAgainModal from './GuessAgainModal';
 import GameOverModal from './GameOverModal';
 
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
 const PlayerGrid: React.FC = ({ navigation, route }: any) => {
   const [playerNames, setPlayerNames] = useState<string[][]>([['', ''], ['', '']]);
@@ -28,10 +30,8 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
   const [score, setScore] = useState<number>(0);
   const [gameDone, setGameDone] = useState<boolean>(false);
   const [username, setUsername] = useState<string>(route.params.user);
-  //const [username, setUsername] = useState<string>('anthony');
 
 
-  //this is a temporary test method
   const checkAnswer = (row: number, col: number, searchText: string) => {
     if (guessedNames.includes(searchText)) {
       setGuessAgainModal(true);
@@ -197,28 +197,28 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
       <>
         {row - 1 === 0 && col - 1 === 0 ? (
           <TouchableOpacity
-            style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderTopLeftRadius: 15 }]}
+            style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderTopLeftRadius: 15, borderWidth: 1 }]}
             onPress={() => handleCellClick(row, col)}
           >
             <Text style={styles.text}>{enteredNames[row - 1][col - 1]}</Text>
           </TouchableOpacity>
         ) : row - 1 === 1 && col - 1 === 0 ? (
           <TouchableOpacity
-            style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderBottomLeftRadius: 15 }]}
+            style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderBottomLeftRadius: 15, borderWidth: 1 }]}
             onPress={() => handleCellClick(row, col)}
           >
             <Text style={styles.text}>{enteredNames[row - 1][col - 1]}</Text>
           </TouchableOpacity>
         ) : row - 1 === 0 && col - 1 === 1 ? (
           <TouchableOpacity
-            style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderTopRightRadius: 15 }]}
+            style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderTopRightRadius: 15, borderWidth: 1 }]}
             onPress={() => handleCellClick(row, col)}
           >
             <Text style={styles.text}>{enteredNames[row - 1][col - 1]}</Text>
           </TouchableOpacity>
         ) : row - 1 === 1 && col - 1 === 1 ? (
           <TouchableOpacity
-            style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderBottomRightRadius: 15 }]}
+            style={[styles.cell, { backgroundColor: cellColors[row - 1][col - 1], borderBottomRightRadius: 15, borderWidth: 1 }]}
             onPress={() => handleCellClick(row, col)}
           >
             <Text style={styles.text}>{enteredNames[row - 1][col - 1]}</Text>
@@ -243,34 +243,42 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
       />
       <GuessAgainModal isVisible={guessAgainModal} onClose={closeModalGuessAgain} />
       <GameOverModal score={score} isVisible={gameDone} onClose={closeModalGameDone} />
-      <View style={styles.container}>
-        <View>
-          <View style={styles.container}>
+      <View style={styles.containerGame}>
+        <View style={styles.containerTable}>
+          <View style={styles.topNamesContainer}>
             <Text style={styles.players} />
-            <Text style={styles.players}>{playerNames[1][0]}</Text>
+            <Text style={styles.players}>{playerNames[1][0]}</Text> 
             <Text style={styles.players}>{playerNames[1][1]}</Text>
           </View>
-
-          <View style={styles.container}>
-            <Text style={styles.players}>{playerNames[0][0]}</Text>
-            {renderTableCell(1, 1)}
-            {renderTableCell(1, 2)}
+          <View style={styles.containerRow1}>
+            <Text style={styles.players}>{playerNames[0][0]}</Text> 
+            <View style={styles.cell}>
+              {renderTableCell(1, 1)}
+            </View>
+            <View style={styles.cell}>
+              {renderTableCell(1, 2)}
+            </View>          
           </View>
 
-          <View style={styles.container}>
+          <View style={styles.containerRow2}>
             <Text style={styles.players}>{playerNames[0][1]}</Text>
-            {renderTableCell(2, 1)}
-            {renderTableCell(2, 2)}
+            <View style={styles.cell}>
+              {renderTableCell(2, 1)}
+            </View>            
+            <View style={styles.cell}>
+              {renderTableCell(2, 2)}
+            </View>          
           </View>
-
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.textHeader}>Guesses </Text>
           <Text style={styles.textValue}>{remainingGuesses} </Text>
           <Text style={styles.textHeader}>Score </Text>
           <Text style={styles.textValue}>{score}</Text>
-        </View>
       </View>
+      </View>
+
+
       <Modal
         transparent={true}
         animationType="slide"
@@ -298,35 +306,67 @@ const PlayerGrid: React.FC = ({ navigation, route }: any) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
+    flexWrap: 'wrap',
+    backgroundColor: 'lightgrey',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'lightgrey',
   },
-  container: {
+  containerGame: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: isMobile ? '80%' : '90%',
+    height: '80%',
+    padding: 20,
   },
+  containerTable: {
+    flexWrap: 'wrap',
+    height: isMobile ? '90%' : '100%',
+    width: isMobile ? '90%' : '80%',
 
+  },
+  containerRow1: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    flex: 1,
+    marginTop: isMobile ? '10%' : null,
+
+
+  },
+  containerRow2: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    flex: 1,
+
+  },
+  topNamesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    height: '10%',
+    width: '100%',
+  },
   bottomButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: '2%',
     height: '8%',
-    width: '20%'
+    width: '20%',
+    marginLeft: '5%'
   },
   cell: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: 'black',
+    width: '100%',
+    height: '100%',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 200,
-    height: 200,
   },
   text: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: isMobile ? 12 : 18,
+    fontWeight: '700',
+    textAlign: 'center',
+
   },
   textLoading: {
     fontWeight: '900',
@@ -334,8 +374,10 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   textContainer: {
-    marginLeft: '20%',
-    marginTop: '20%',
+    flex: 1,
+    marginLeft: '5%',
+    flexWrap: 'wrap',
+    marginTop: isMobile ? '50%' : '10%',
   },
   textHeader: {
     fontSize: 18,
@@ -345,14 +387,12 @@ const styles = StyleSheet.create({
   textValue: {
     fontSize: 35,
     fontWeight: '900',
-    marginBottom: '80%',
+    marginBottom: '50%',
     color: 'darkblue',
   },
   players: {
     flex: 1,
-    height: 100,
-    width: 150,
-    fontSize: 20,
+    fontSize: isMobile ? 14 : 20,
     fontWeight: '900',
     textAlign: 'center',
     marginRight: 5,
@@ -372,7 +412,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: '20%',
     height: '100%',
-    width: '50%',
+    width: isMobile ? '90%' : '50%',
   },
   scoresButtonText: {
     color: 'white',

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image, Dimensions } from 'react-native';
 import axios from 'axios';
 
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
 function LoginPage({ navigation }: any) {
 
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         borderRadius: 10,
-        width: '30%',
+        width: isMobile ? '80%' : '30%',
         height: '80%',
         shadowColor: 'black',
         shadowOffset: { width: -2, height: 4 },

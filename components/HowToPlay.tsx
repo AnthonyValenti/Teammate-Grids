@@ -1,5 +1,8 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View, Modal } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, View, Modal, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
 interface HowToPlayProps {
   isVisible: boolean
@@ -50,7 +53,7 @@ const styles = StyleSheet.create({
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
-      width: '40%',
+      width: isMobile ? '80%' : '40%',
       height: '60%',
       backgroundColor: 'darkblue',
       padding: 20,

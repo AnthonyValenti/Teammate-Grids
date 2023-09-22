@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
 import axios from 'axios';
 
-
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
 
 const PastScores: React.FC = ({ navigation, route }: any) => {
     const [scores, setScores] = useState<string[][]>([['']]);
     const [username,setUsername] = useState<string>(route.params.user);
-    //const [username, setUsername] = useState<string>('anthony');
 
 
 
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         borderRadius: 10,
-        width: '40%',
+        width: isMobile ? '80%':'40%',
         height: '50%',
         shadowColor: 'black',
         shadowOffset: { width: -2, height: 4 },
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'orangered', 
         borderRadius: 15,
         height: '8%',
-        width: '15%',
+        width: isMobile? '25%':'15%',
         marginBottom: '5%',
         justifyContent: 'center',
       },

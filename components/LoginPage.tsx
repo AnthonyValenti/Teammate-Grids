@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         backgroundColor: 'lightgrey',
         height: '100%',
+        flexWrap: 'wrap',
     },
     spacer: {
         marginBottom: '20%'
@@ -117,12 +118,13 @@ const styles = StyleSheet.create({
         shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 10,
+        flexWrap: 'wrap',
     },
     text1: {
-        marginTop: '5%',
         fontWeight: '900',
-        fontSize: 35,
-        color: 'white'
+        fontSize: 30,
+        color: 'white',
+        padding: 20,
     },
     text2: {
         fontWeight: '900',
@@ -133,7 +135,8 @@ const styles = StyleSheet.create({
         fontWeight: '900',
         fontSize: 14,
         color: 'red',
-        marginTop: '2%'
+        marginTop: '2%',
+        padding: 20,
     },
     input: {
         padding: 10,
@@ -148,6 +151,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 10,
+        flexWrap: 'wrap'
     },
     button: {
         padding: 10,
@@ -155,12 +159,14 @@ const styles = StyleSheet.create({
         width: '40%',
         height: '6%',
         alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: 'orangered',
         borderRadius: 10,
         shadowColor: 'black',
         shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 10,
+        minWidth: '20%',
     },
     backgroundImage: {
         position: 'absolute',

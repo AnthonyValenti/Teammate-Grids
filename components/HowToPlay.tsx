@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
-      width: isMobile ? '80%' : '40%',
-      height: '60%',
+      width: isMobile ? '90%' : '40%',
+      height: '75%',
       backgroundColor: 'darkblue',
       padding: 20,
       borderRadius: 8,

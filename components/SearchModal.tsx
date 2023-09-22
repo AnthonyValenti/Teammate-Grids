@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import allNames from '../assets/allNames';
+
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
 interface SearchModalProps {
   playerName1: string | null;
@@ -82,8 +85,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    width: '50%',
-    height: '30%',
+    width: isMobile ? '80%':'50%',
+    height: isMobile ? '50%':'30%',
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 8,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image, Dimensions, Modal, ActivityIndicator } from 'react-native';
 import axios from 'axios';
+
 
 const { width } = Dimensions.get('window');
 const isMobile = width < 768;
@@ -11,7 +12,25 @@ function LoginPage({ navigation }: any) {
     const [password, setPassword] = useState<string>('');
     const [loginErrorShow, setLoginError] = useState<boolean>(false);
     const [registerErrorShow, setRegisterError] = useState<boolean>(false);
+    const [isLoading, setLoading] = useState<boolean>(true);
 
+
+    useEffect(() => {
+        getPlayerNames().then((response) => {
+            setLoading(false);
+
+        });
+    }, []);
+
+    const getPlayerNames = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get('https://teammate-grids-server.onrender.com/playerNames');
+            return (response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     const hanleLogin = async () => {
         const data = {
@@ -53,8 +72,18 @@ function LoginPage({ navigation }: any) {
 
     return (
         <View style={styles.container}>
+            <Modal
+                transparent={true}
+                animationType="slide"
+                visible={isLoading}
+            >
+                <View style={styles.loadingModal}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                    <Text style={styles.textLoading}>Connecting to server...</Text>
+                </View>
+            </Modal>
             <Image
-                source={require('../assets/logos.jpg')} 
+                source={require('../assets/logos.jpg')}
                 style={styles.backgroundImage}
             />
             <View style={styles.container2}>
@@ -85,12 +114,12 @@ function LoginPage({ navigation }: any) {
                 <TouchableOpacity style={styles.button} onPress={() => handleRegister()}>
                     <Text style={styles.text2}>Register</Text>
                 </TouchableOpacity>
-                    {loginErrorShow && (
-                        <Text style={styles.errorText}>Error account does not exists!</Text>
-                    )}
-                    {registerErrorShow && (
-                        <Text style={styles.errorText}>Error username exists already!</Text>
-                    )}
+                {loginErrorShow && (
+                    <Text style={styles.errorText}>Error account does not exists!</Text>
+                )}
+                {registerErrorShow && (
+                    <Text style={styles.errorText}>Error username exists already!</Text>
+                )}
 
             </View>
         </View>
@@ -176,6 +205,20 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         opacity: 0.1,
+    },
+    refreshIndicator: {
+        justifyContent: 'center'
+      },
+      loadingModal: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      },
+      textLoading: {
+        fontWeight: '900',
+        fontSize: 25,
+        color: 'white',
       },
 
 });
